@@ -322,6 +322,7 @@
   (or (nil? x)
       (f x)))
 
+#_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn emoji
   "Returns the `emoji-string` passed in if emoji in logs are enabled, otherwise always returns an empty string."
   ^String [emoji-string]

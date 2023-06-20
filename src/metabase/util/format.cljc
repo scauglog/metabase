@@ -52,6 +52,7 @@
       (recur (/ n 1024.0) more)
       (format-with-unit n suffix))))
 
+#_{:clj-kondo/ignore #?(:clj [] :cljs [:unused-binding])}
 (defn colorize
   "Colorize string `x` using `color`, a symbol or keyword, but only if `MB_COLORIZE_LOGS` is enabled (the default).
   `color` can be `green`, `red`, `yellow`, `blue`, `cyan`, `magenta`, etc. See the entire list of avaliable
