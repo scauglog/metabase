@@ -145,7 +145,7 @@
 
 (defn mb-session-cookie-samesite
   "Value for session cookie's `SameSite` directive. Must be one of \"none\", \"lax\", or \"strict\" (case insensitive)."
-  ^Keyword []
+  []
   #_{:clj-kondo/ignore [:discouraged-var]}
   (let [same-site (str/lower-case (config-str :mb-session-cookie-samesite))]
     (when-not (#{"none", "lax", "strict"} same-site)
