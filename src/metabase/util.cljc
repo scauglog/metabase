@@ -322,12 +322,13 @@
   (or (nil? x)
       (f x)))
 
-(def ^String ^{:arglists '([emoji-string])} emoji
+(defn emoji
   "Returns the `emoji-string` passed in if emoji in logs are enabled, otherwise always returns an empty string."
+  ^String [emoji-string]
   #?(:clj  (if (config/config-bool :mb-emoji-in-logs)
-             identity
-             (constantly ""))
-     :cljs (constantly "")))
+             emoji-string
+             "")
+     :cljs ""))
 
 (defn round-to-decimals
   "Round (presumabily floating-point) `number` to `decimal-place`. Returns a `Double`.
