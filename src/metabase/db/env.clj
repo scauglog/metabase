@@ -140,7 +140,7 @@
 (def db-type
   "Keyword type name of the application DB details specified by environment variables. Matches corresponding driver
   name e.g. `:h2`, `:mysql`, or `:postgres`."
-  (delay
+  (delay ; << We use DB connection info that is not available at compile time.
     (let [db-type (env->db-type (env))]
       (when (= db-type :h2)
         (log/warn
@@ -175,4 +175,5 @@
 
 (def data-source
   "A [[javax.sql.DataSource]] ultimately derived from the environment variables."
-  (delay (env->DataSource @db-type (env))))
+  (delay ; << We use DB connection info that is not available at compile time.
+    (env->DataSource @db-type (env))))
