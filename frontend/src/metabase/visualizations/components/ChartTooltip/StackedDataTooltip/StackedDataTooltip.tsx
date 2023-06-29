@@ -39,7 +39,6 @@ const StackedDataTooltip = ({
     () => getTotalValue(sortedHeaderRows, sortedBodyRows),
     [sortedHeaderRows, sortedBodyRows],
   );
-  const total = grandTotal ?? rowsTotal;
 
   const isShowingTotalSensible =
     sortedHeaderRows.length + sortedBodyRows.length > 1;
@@ -48,6 +47,10 @@ const StackedDataTooltip = ({
       [...sortedBodyRows, ...sortedHeaderRows].some(row => row.color != null),
     [sortedHeaderRows, sortedBodyRows],
   );
+
+  // For some charts such as PieChart we intentionally show only certain data rows that do not represent the full data.
+  // In order to calculate percentages correctly we provide the grand total value
+  const percentCalculationTotal = grandTotal ?? rowsTotal;
 
   const trimmedBodyRows = groupExcessiveTooltipRows(
     sortedBodyRows,
@@ -69,7 +72,7 @@ const StackedDataTooltip = ({
               key={index}
               isHeader
               percent={
-                showPercentages ? getPercent(total, row.value) : undefined
+                showPercentages ? getPercent(rowsTotal, row.value) : undefined
               }
               {...row}
             />
@@ -82,7 +85,7 @@ const StackedDataTooltip = ({
               <TooltipRow
                 key={index}
                 percent={
-                  showPercentages ? getPercent(total, row.value) : undefined
+                  showPercentages ? getPercent(rowsTotal, row.value) : undefined
                 }
                 {...row}
               />
@@ -96,7 +99,9 @@ const StackedDataTooltip = ({
               value={totalFormatter(rowsTotal)}
               hasIcon={hasColorIndicators}
               percent={
-                showPercentages ? getPercent(total, rowsTotal) : undefined
+                showPercentages
+                  ? getPercent(percentCalculationTotal, rowsTotal)
+                  : undefined
               }
             />
           </DataPointTableFooter>
