@@ -956,16 +956,6 @@
 ;;; |                              Reactivating a User -- PUT /api/user/:id/reactivate                               |
 ;;; +----------------------------------------------------------------------------------------------------------------+
 
-(t2.with-temp/with-temp [User user {:is_active false}]
-  ;; now try creating the same user again, should re-activiate the original
-  (mt/user-http-request :crowberto :put 200 (format "user/%s/reactivate" (u/the-id user))
-                        {:first_name (:first_name user)
-                         :last_name  "whatever"
-                         :email      (:email user)})
-  (is (= true
-         (t2/select-one-fn :is_active User :id (:id user)))
-      "the user should now be active"))
-
 (deftest reactivate-user-test
   (testing "PUT /api/user/:id/reactivate"
     (testing "Test that reactivating a disabled account works"
