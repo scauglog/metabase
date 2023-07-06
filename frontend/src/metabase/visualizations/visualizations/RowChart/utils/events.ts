@@ -25,7 +25,7 @@ import { sumMetric } from "metabase/visualizations/shared/utils/data";
 import { formatValueForTooltip } from "metabase/visualizations/lib/tooltip";
 import {
   DataPoint,
-  StackedTooltipModel,
+  DataPointTableTooltipModel,
   TooltipRowModel,
 } from "metabase/visualizations/components/ChartTooltip/types";
 import { getStackOffset } from "metabase/visualizations/lib/settings/stacking";
@@ -276,7 +276,7 @@ export const getHoverData = (
   datumIndex: number;
   index: number;
   data?: DataPoint[];
-  stackedTooltipModel?: StackedTooltipModel;
+  dataPointTableTooltipModel?: DataPointTableTooltipModel;
 } => {
   const hoverData = {
     settings,
@@ -304,7 +304,7 @@ export const getHoverData = (
 
   return {
     ...hoverData,
-    stackedTooltipModel: getTooltipModel(
+    dataPointTableTooltipModel: getTooltipModel(
       bar,
       settings,
       chartColumns,

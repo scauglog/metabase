@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { color } from "metabase/lib/colors";
 import { TooltipRow, TooltipTotalRow } from "../TooltipRow";
-import type { StackedTooltipModel } from "../types";
+import type { DataPointTableTooltipModel } from "../types";
 import {
   DataPointHeader,
   DataPointTableHeader,
@@ -9,7 +9,7 @@ import {
   DataPointTableBody,
   DataPointTable,
   DataPointTableFooter,
-} from "./StackedDataTooltip.styled";
+} from "./DataPointTableTooltip.styled";
 import {
   getPercent,
   getSortedRows,
@@ -19,9 +19,9 @@ import {
 
 const MAX_BODY_ROWS = 8;
 
-type StackedDataTooltipProps = StackedTooltipModel;
+type StackedDataTooltipProps = DataPointTableTooltipModel;
 
-const StackedDataTooltip = ({
+const DataPointTableTooltip = ({
   headerTitle,
   headerRows,
   bodyRows = [],
@@ -71,9 +71,7 @@ const StackedDataTooltip = ({
             <TooltipRow
               key={index}
               isHeader
-              percent={
-                showPercentages ? getPercent(rowsTotal, row.value) : undefined
-              }
+              percent={getPercent(rowsTotal, row.value)}
               {...row}
             />
           ))}
@@ -84,9 +82,7 @@ const StackedDataTooltip = ({
             {trimmedBodyRows.map((row, index) => (
               <TooltipRow
                 key={index}
-                percent={
-                  showPercentages ? getPercent(rowsTotal, row.value) : undefined
-                }
+                percent={getPercent(rowsTotal, row.value)}
                 {...row}
               />
             ))}
@@ -98,11 +94,7 @@ const StackedDataTooltip = ({
             <TooltipTotalRow
               value={totalFormatter(rowsTotal)}
               hasIcon={hasColorIndicators}
-              percent={
-                showPercentages
-                  ? getPercent(percentCalculationTotal, rowsTotal)
-                  : undefined
-              }
+              percent={getPercent(percentCalculationTotal, rowsTotal)}
             />
           </DataPointTableFooter>
         )}
@@ -112,4 +104,4 @@ const StackedDataTooltip = ({
 };
 
 // eslint-disable-next-line import/no-default-export -- deprecated usage
-export default StackedDataTooltip;
+export default DataPointTableTooltip;

@@ -144,8 +144,9 @@ export function getClickHoverObject(
       // repeats column names, the card name is used OR some combo of the card name and column display_name is used.
       if (
         isAddedSeriesOnDashcard &&
-        // Sometimes (bar charts only?), the card name is set to one of the column names (not necessarily the `rawCol` in this function).
-        // In that scenario, we can probably be confident that the viz settings key for the column is the column name.
+        // Sometimes (bar charts only?), the card name is set to one of the column names (not necessarily the `rawCol`
+        // in this function). In that scenario, we can probably be confident that the viz settings key for the column
+        // is the column name.
         !isCardNameTakenFromColumnName &&
         // the x axis (first) column uses the column name
         colIndex >= 1
@@ -306,7 +307,8 @@ function aggregateRows(rows) {
   return aggregatedRow;
 }
 
-const shouldShowStackedTooltip = (settings, series) => {
+const shouldShowDataPointTableTooltip = (settings, series) => {
+  // TODO: we also need to return true when displaying multi-metric bars
   const hasStackedSettings = isStacked(settings, series);
   const isSuitableVizType = series.every(series =>
     ["bar", "area"].includes(series.card?.display),
@@ -315,7 +317,7 @@ const shouldShowStackedTooltip = (settings, series) => {
   return hasStackedSettings && isSuitableVizType;
 };
 
-export const getStackedTooltipModel = (
+export const getDataPointTableTooltipModel = (
   multipleCardSeries,
   datas,
   settings,
@@ -443,7 +445,8 @@ export function setupTooltips(
     const seriesIndex = determineSeriesIndexFromElement(target, stacked);
     const seriesSettings = chart.settings.series(series[seriesIndex]);
     const seriesTitle = seriesSettings && seriesSettings.title;
-    const classList = [...target.classList.values()]; // values returns an iterator, but getClickHoverObject uses Array#includes
+    const classList = [...target.classList.values()]; // values returns an iterator, but getClickHoverObject uses
+    // Array#includes
 
     // no tooltips when brushing
     if (isBrushing()) {
@@ -469,11 +472,8 @@ export function setupTooltips(
       dashboard,
     });
 
-    const shouldShowStaticTooltip =
-      d.x != null && shouldShowStackedTooltip(settings, series);
-
-    if (shouldShowStaticTooltip) {
-      mouseEventData.stackedTooltipModel = getStackedTooltipModel(
+    if (d.x != null && shouldShowDataPointTableTooltip(settings, series)) {
+      mouseEventData.dataPointTableTooltipModel = getDataPointTableTooltipModel(
         series,
         datas,
         settings,

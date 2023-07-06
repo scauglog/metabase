@@ -1,5 +1,5 @@
 import _ from "underscore";
-import { StackedTooltipModel } from "metabase/visualizations/components/ChartTooltip/types";
+import { DataPointTableTooltipModel } from "metabase/visualizations/components/ChartTooltip/types";
 
 export function getMaxLabelDimension(
   d3Arc: d3.svg.Arc<d3.svg.arc.Arc>,
@@ -42,7 +42,7 @@ export const getTooltipModel = (
   dimensionFormatter: (value: unknown) => string,
   metricFormatter: (value: unknown) => string,
   grandTotal?: number,
-): StackedTooltipModel => {
+): DataPointTableTooltipModel => {
   const rows = slices.map(slice => ({
     name: dimensionFormatter(slice.key),
     value: slice.value,

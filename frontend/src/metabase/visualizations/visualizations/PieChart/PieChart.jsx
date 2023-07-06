@@ -436,7 +436,7 @@ export default class PieChart extends Component {
         return {
           index,
           event: event && event.nativeEvent,
-          stackedTooltipModel: getTooltipModel(
+          dataPointTableTooltipModel: getTooltipModel(
             others.map(o => ({
               key: formatDimension(o.key, false),
               value: o.displayValue,
@@ -452,7 +452,7 @@ export default class PieChart extends Component {
         return {
           index,
           event: event && event.nativeEvent,
-          stackedTooltipModel: getTooltipModel(
+          dataPointTableTooltipModel: getTooltipModel(
             slices,
             index,
             getFriendlyName(cols[dimensionIndex]),

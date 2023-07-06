@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 
 import {
   getClickHoverObject,
-  getStackedTooltipModel,
+  getDataPointTableTooltipModel,
 } from "metabase/visualizations/lib/apply_tooltips";
 import { getDatas } from "metabase/visualizations/lib/renderer_utils";
 
@@ -240,7 +240,7 @@ describe("getStackedTooltipModel", () => {
   it("sets tooltip model rows", () => {
     const series = getMockSeries();
     const datas = getDatas({ series, settings });
-    const { bodyRows, headerRows, headerTitle } = getStackedTooltipModel(
+    const { bodyRows, headerRows, headerTitle } = getDataPointTableTooltipModel(
       series,
       datas,
       settings,
@@ -271,7 +271,7 @@ describe("getStackedTooltipModel", () => {
   it("sets showTotal and showPercentages to true for charts with breakouts", () => {
     const series = getMockSeries(true);
     const datas = getDatas({ series, settings });
-    const { showTotal, showPercentages } = getStackedTooltipModel(
+    const { showTotal, showPercentages } = getDataPointTableTooltipModel(
       series,
       datas,
       settings,
@@ -287,7 +287,7 @@ describe("getStackedTooltipModel", () => {
   it("sets showTotal and showPercentages to false for charts without breakouts", () => {
     const series = getMockSeries();
     const datas = getDatas({ series, settings });
-    const { showTotal, showPercentages } = getStackedTooltipModel(
+    const { showTotal, showPercentages } = getDataPointTableTooltipModel(
       series,
       datas,
       settings,

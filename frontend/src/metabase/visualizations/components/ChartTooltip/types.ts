@@ -31,7 +31,7 @@ export interface TooltipRowModel {
   formatter?: (value: unknown) => string;
 }
 
-export interface StackedTooltipModel {
+export interface DataPointTableTooltipModel {
   headerTitle?: string;
   headerRows: TooltipRowModel[];
   bodyRows?: TooltipRowModel[];
@@ -53,5 +53,5 @@ export interface HoveredObject {
   settings?: VisualizationSettings;
   element?: HTMLElement;
   event?: MouseEvent;
-  stackedTooltipModel?: StackedTooltipModel;
+  dataPointTableTooltipModel?: DataPointTableTooltipModel;
 }

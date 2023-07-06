@@ -2,7 +2,7 @@ import { MouseEvent, useMemo } from "react";
 import _ from "underscore";
 import { getEventTarget } from "metabase/lib/dom";
 import Tooltip from "metabase/core/components/Tooltip";
-import StackedDataTooltip from "./StackedDataTooltip";
+import DataPointTableTooltip from "./DataPointTableTooltip";
 import KeyValuePairChartTooltip from "./KeyValuePairChartTooltip";
 import TimelineEventTooltip from "./TimelineEventTooltip";
 import {
@@ -25,8 +25,8 @@ const ChartTooltip = ({ hovered, settings }: ChartTooltipProps) => {
       return <TimelineEventTooltip hovered={hovered as HoveredTimelineEvent} />;
     }
 
-    if (hovered.stackedTooltipModel) {
-      return <StackedDataTooltip {...hovered.stackedTooltipModel} />;
+    if (hovered.dataPointTableTooltipModel) {
+      return <DataPointTableTooltip {...hovered.dataPointTableTooltipModel} />;
     }
 
     return <KeyValuePairChartTooltip hovered={hovered} settings={settings} />;
@@ -39,7 +39,7 @@ const ChartTooltip = ({ hovered, settings }: ChartTooltipProps) => {
     return (
       hovered.value !== undefined ||
       !_.isEmpty(hovered.timelineEvents) ||
-      !_.isEmpty(hovered.stackedTooltipModel) ||
+      !_.isEmpty(hovered.dataPointTableTooltipModel) ||
       !_.isEmpty(hovered.data) ||
       !_.isEmpty(hovered.dimensions)
     );
@@ -49,7 +49,7 @@ const ChartTooltip = ({ hovered, settings }: ChartTooltipProps) => {
   const hasTargetElement =
     hovered?.element != null && document.body.contains(hovered.element);
   const isOpen = isNotEmpty && (hasTargetElement || hasTargetEvent);
-  const isPadded = hovered?.stackedTooltipModel == null;
+  const isPadded = hovered?.dataPointTableTooltipModel == null;
 
   const target = hasTargetElement
     ? hovered?.element

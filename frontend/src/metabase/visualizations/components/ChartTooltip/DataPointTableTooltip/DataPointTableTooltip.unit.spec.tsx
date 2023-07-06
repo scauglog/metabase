@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import _ from "underscore";
 
-import type { StackedTooltipModel } from "../types";
-import StackedDataTooltip from "./StackedDataTooltip";
+import type { DataPointTableTooltipModel } from "../types";
+import DataPointTableTooltip from "./DataPointTableTooltip";
 
 const defaultHeaderRows = [
   {
@@ -33,9 +33,9 @@ const setup = ({
   headerRows = defaultHeaderRows,
   bodyRows = defaultBodyRows,
   ...rest
-}: Partial<StackedTooltipModel> = {}) => {
+}: Partial<DataPointTableTooltipModel> = {}) => {
   render(
-    <StackedDataTooltip
+    <DataPointTableTooltip
       headerTitle={headerTitle}
       headerRows={headerRows}
       bodyRows={bodyRows}

@@ -112,7 +112,7 @@ describe("events utils", () => {
           datasetColumns,
           [series1, series2],
           seriesColors,
-        ).stackedTooltipModel;
+        ).dataPointTableTooltipModel;
 
         const { headerRows, bodyRows, headerTitle } = tooltipModel ?? {};
 
@@ -149,7 +149,7 @@ describe("events utils", () => {
         datasetColumns,
         [series1],
         seriesColors,
-      ).stackedTooltipModel;
+      ).dataPointTableTooltipModel;
 
       expect(tooltipModel).not.toBeDefined();
     });
@@ -162,7 +162,7 @@ describe("events utils", () => {
         datasetColumns,
         [series1, series1],
         seriesColors,
-      ).stackedTooltipModel;
+      ).dataPointTableTooltipModel;
 
       expect(tooltipModel).not.toBeDefined();
     });
