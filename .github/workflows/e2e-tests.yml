@@ -189,7 +189,7 @@ jobs:
           TERM: xterm
 
       - name: Run EE Cypress tests on ${{ matrix.folder }}
-        if: matrix.edition == 'ee' && github.event_name != 'schedule'
+        if: matrix.edition == 'ee' && matrix.context != 'grep' && github.event_name != 'schedule'
         run: |
           yarn run test-cypress-run \
           --env grepTags="-@quarantine" \
@@ -226,7 +226,7 @@ jobs:
           RECORD_REPLAY_METADATA_TEST_RUN_ID: ${{ needs.test-run-id.outputs.testRunId }}
 
       - name: Run EE Cypress tests on ${{ matrix.folder }} using Replay.io browser
-        if: matrix.edition == 'ee' && github.event_name == 'schedule'
+        if: matrix.edition == 'ee' && matrix.context != 'grep' && github.event_name == 'schedule'
         run: |
           yarn run test-cypress-run \
           --env grepTags="-@quarantine" \
