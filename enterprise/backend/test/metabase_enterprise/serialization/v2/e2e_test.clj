@@ -707,30 +707,7 @@
         (ts/with-source-and-dest-dbs
           (ts/with-source-db
             ;; preparation
-            (t2.with-temp/with-temp
-              [Dashboard           {dashboard-id :id
-                                    dashboard-eid :entity_id} {:name "Dashboard with tab"}
-               Card                {card-id-1 :id
-                                    card-eid-1 :entity_id}    {:name "Card 1"}
-               Card                {card-id-2 :id
-                                    card-eid-2 :entity_id}    {:name "Card 2"}
-               :model/DashboardTab {tab-id-1 :id
-                                    tab-eid-1 :entity_id}     {:name "Tab 1" :position 0 :dashboard_id dashboard-id}
-               :model/DashboardTab {tab-id-2 :id
-                                    tab-eid-2 :entity_id}     {:name "Tab 2" :position 1 :dashboard_id dashboard-id}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-1
-                                                               :dashboard_tab_id tab-id-1}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-2
-                                                               :dashboard_tab_id tab-id-1}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-1
-                                                               :dashboard_tab_id tab-id-2}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-2
-                                                               :dashboard_tab_id tab-id-2}]
-
+            (t2.with-temp/with-temp [Dashboard _ {:name "some dashboard"}]
               (testing "export (v2-dump) command"
                 (is (cmd/v2-dump dump-dir {})
                     "works"))
@@ -747,30 +724,7 @@
         (ts/with-source-and-dest-dbs
           (ts/with-source-db
             ;; preparation
-            (t2.with-temp/with-temp
-              [Dashboard           {dashboard-id :id
-                                    dashboard-eid :entity_id} {:name "Dashboard with tab"}
-               Card                {card-id-1 :id
-                                    card-eid-1 :entity_id}    {:name "Card 1"}
-               Card                {card-id-2 :id
-                                    card-eid-2 :entity_id}    {:name "Card 2"}
-               :model/DashboardTab {tab-id-1 :id
-                                    tab-eid-1 :entity_id}     {:name "Tab 1" :position 0 :dashboard_id dashboard-id}
-               :model/DashboardTab {tab-id-2 :id
-                                    tab-eid-2 :entity_id}     {:name "Tab 2" :position 1 :dashboard_id dashboard-id}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-1
-                                                               :dashboard_tab_id tab-id-1}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-2
-                                                               :dashboard_tab_id tab-id-1}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-1
-                                                               :dashboard_tab_id tab-id-2}
-               DashboardCard       _                          {:dashboard_id     dashboard-id
-                                                               :card_id          card-id-2
-                                                               :dashboard_tab_id tab-id-2}]
-
+            (t2.with-temp/with-temp [Dashboard _ {:name "some dashboard"}]
               (testing "export (v2-dump) command"
                 (is (thrown-with-msg? Exception #"requires a premium token"
                                       (cmd/v2-dump dump-dir {}))
