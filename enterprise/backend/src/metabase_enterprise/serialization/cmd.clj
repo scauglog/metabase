@@ -22,6 +22,7 @@
    [metabase.models.table :refer [Table]]
    [metabase.models.user :refer [User]]
    [metabase.plugins :as plugins]
+   [metabase.public-settings.premium-features :as premium-features]
    [metabase.util :as u]
    [metabase.util.i18n :refer [deferred-trs trs]]
    [metabase.util.log :as log]
@@ -46,11 +47,16 @@
      (s/optional-key :mode)     Mode}
     (deferred-trs "invalid context seed value")))
 
+(defn- check-premium-token! []
+  (when-not (premium-features/has-feature? :serialization)
+    (throw (Exception. (trs "Serialization requires a premium token with the serialization feature.")))))
+
 (s/defn v1-load
   "Load serialized metabase instance as created by [[dump]] command from directory `path`."
   [path context :- Context]
   (plugins/load-plugins!)
   (mdb/setup-db!)
+  (check-premium-token!)
   (when-not (load/compatible? path)
     (log/warn (trs "Dump was produced using a different version of Metabase. Things may break!")))
   (let [context (merge {:mode     :skip
@@ -80,6 +86,7 @@
    opts :- [:map [:abort-on-error {:optional true} [:maybe :boolean]]]]
   (plugins/load-plugins!)
   (mdb/setup-db!)
+  (check-premium-token!)
   ; TODO This should be restored, but there's no manifest or other meta file written by v2 dumps.
   ;(when-not (load/compatible? path)
   ;  (log/warn (trs "Dump was produced using a different version of Metabase. Things may break!")))
@@ -144,6 +151,7 @@
   [path {:keys [state user] :or {state :active} :as opts}]
   (log/info (trs "BEGIN DUMP to {0} via user {1}" path user))
   (mdb/setup-db!)
+  (check-premium-token!)
   (t2/select User) ;; TODO -- why??? [editor's note: this comment originally from Cam]
   (let [users       (if user
                       (let [user (t2/select-one User
@@ -186,6 +194,7 @@
   [path {:keys [user-email collection-ids] :as opts}]
   (log/info (trs "Exporting Metabase to {0}" path) (u/emoji "🏭 🚛💨"))
   (mdb/setup-db!)
+  (check-premium-token!)
   (t2/select User) ;; TODO -- why??? [editor's note: this comment originally from Cam]
   (serdes/with-cache
     (-> (cond-> opts
