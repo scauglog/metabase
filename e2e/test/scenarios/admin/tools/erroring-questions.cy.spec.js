@@ -1,4 +1,4 @@
-import { restore, isPremium } from "e2e/support/helpers";
+import { restore, isPremium, appBar, main } from "e2e/support/helpers";
 
 const TOOLS_ERRORS_URL = "/admin/tools/errors";
 
@@ -113,6 +113,34 @@ describe.skip(
 
         // eslint-disable-next-line no-unscoped-text-selectors -- deprecated usage
         cy.findByText("No results");
+      });
+    });
+  },
+);
+
+describe(
+  "admin > tools > erroring questions ",
+  { tags: ["@EE-no-token", "@OSS"] },
+  () => {
+    beforeEach(() => {
+      cy.onlyOn(!isPremium);
+
+      restore();
+      cy.signInAsAdmin();
+    });
+
+    it("should not show tools -> errors", () => {
+      cy.visit("/admin");
+
+      appBar().findByText("Tools").should("not.exist");
+
+      cy.visit("/admin/tools/errors");
+
+      main().within(() => {
+        cy.findByText("Questions that errored when last run").should(
+          "not.exist",
+        );
+        cy.findByText("We're a little lost...");
       });
     });
   },

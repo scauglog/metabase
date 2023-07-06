@@ -111,6 +111,10 @@ jobs:
           - edition: oss
             context: grep
             java-version: 11
+          - edition: ee
+            context: grep
+            java-version: 11
+            no-token: true
     services:
       maildev:
         image: maildev/maildev:2.0.5
@@ -192,6 +196,16 @@ jobs:
           --folder ${{ matrix.folder }}
         env:
           TERM: xterm
+
+      - name: Run EE Cypress tests without token
+        if: matrix.edition == 'ee' && matrix.no-token == true && github.event_name != 'schedule'
+        run: |
+          yarn run test-cypress-run \
+          --env grepTags="@EE-no-token" \
+          --spec './e2e/test/scenarios/**/*.cy.spec.js'
+        env:
+          TERM: xterm
+          MB_PREMIUM_EMBEDDING_TOKEN: ""
 
       # REPLAY.IO specific jobs
       - name: Install Replay.io browser
@@ -279,6 +293,10 @@ jobs:
           - edition: oss
             context: grep
             java-version: 11
+          - edition: ee
+            context: grep
+            java-version: 11
+            no-token: true
     steps:
       - run: |
           echo "Didn't run due to conditional filtering"
