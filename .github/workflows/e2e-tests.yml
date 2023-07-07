@@ -3,11 +3,11 @@ name: E2E Tests
 on:
   # We'll record runs using Replay.io and their browser on a schedule as an experiment
   schedule:
-    - cron: '0 22 * * 0'
+    - cron: "0 22 * * 0"
   push:
     branches:
       - "master"
-      - 'release-**'
+      - "release-**"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
@@ -72,7 +72,7 @@ jobs:
       needs.build.result == 'success'
     runs-on: ubuntu-22.04
     timeout-minutes: 90
-    name: e2e-tests-${{ matrix.folder }}${{ matrix.context }}-${{ matrix.edition }}
+    name: e2e-tests-${{ matrix.folder }}${{ matrix.context }}-${{ matrix.edition }}${{ !matrix.with_token && "-no-token" || ""  }}
     env:
       MB_EDITION: ${{ matrix.edition }}
       DISPLAY: ""
@@ -87,6 +87,7 @@ jobs:
       matrix:
         java-version: [11]
         edition: [ee]
+        with_token: true
         folder:
           - "actions"
           - "admin"
@@ -111,10 +112,10 @@ jobs:
           - edition: oss
             context: grep
             java-version: 11
+            with_token: false
           - edition: ee
-            context: grep
             java-version: 11
-            no-token: true
+            with_token: false
     services:
       maildev:
         image: maildev/maildev:2.0.5
@@ -189,7 +190,7 @@ jobs:
           TERM: xterm
 
       - name: Run EE Cypress tests on ${{ matrix.folder }}
-        if: matrix.edition == 'ee' && matrix.context != 'grep' && github.event_name != 'schedule'
+        if: matrix.edition == 'ee' && matrix.with_token && github.event_name != 'schedule'
         run: |
           yarn run test-cypress-run \
           --env grepTags="-@quarantine" \
@@ -198,7 +199,7 @@ jobs:
           TERM: xterm
 
       - name: Run EE Cypress tests without token
-        if: matrix.edition == 'ee' && matrix.no-token == true && github.event_name != 'schedule'
+        if: matrix.edition == 'ee' && !matrix.with_token && github.event_name != 'schedule'
         run: |
           yarn run test-cypress-run \
           --env grepTags="@EE-no-token" \
@@ -226,7 +227,7 @@ jobs:
           RECORD_REPLAY_METADATA_TEST_RUN_ID: ${{ needs.test-run-id.outputs.testRunId }}
 
       - name: Run EE Cypress tests on ${{ matrix.folder }} using Replay.io browser
-        if: matrix.edition == 'ee' && matrix.context != 'grep' && github.event_name == 'schedule'
+        if: matrix.edition == 'ee' && matrix.with_token && github.event_name == 'schedule'
         run: |
           yarn run test-cypress-run \
           --env grepTags="-@quarantine" \
@@ -263,12 +264,13 @@ jobs:
       needs.build.result == 'skipped'
     runs-on: ubuntu-22.04
     timeout-minutes: 5
-    name: e2e-tests-${{ matrix.folder }}${{ matrix.context }}-${{ matrix.edition }}
+    name: e2e-tests-${{ matrix.folder }}${{ matrix.context }}-${{ matrix.edition }}${{ !matrix.with_token && "-no-token" || ""  }}
     strategy:
       fail-fast: false
       matrix:
         java-version: [11]
         edition: [ee]
+        with_token: true
         folder:
           - "actions"
           - "admin"
@@ -293,10 +295,10 @@ jobs:
           - edition: oss
             context: grep
             java-version: 11
+            with_token: false
           - edition: ee
-            context: grep
             java-version: 11
-            no-token: true
+            with_token: false
     steps:
       - run: |
           echo "Didn't run due to conditional filtering"
@@ -331,7 +333,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 11
-          distribution: 'temurin'
+          distribution: "temurin"
       - name: Prepare Cypress environment
         uses: ./.github/actions/prepare-cypress
 
