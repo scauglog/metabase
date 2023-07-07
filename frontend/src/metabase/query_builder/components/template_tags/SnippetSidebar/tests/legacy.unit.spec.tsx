@@ -7,12 +7,12 @@ import { SetupOpts, setup as baseSetup } from "./setup";
 async function setup(options: SetupOpts = {}) {
   await baseSetup({
     hasEnterprisePlugins: true,
-    tokenFeatures: { content_management: true },
+    tokenFeatures: { content_management_legacy: true },
     ...options,
   });
 }
 
-describe("SnippetSidebar (EE with token feature)", () => {
+describe("SnippetSidebar (EE with legacy token feature)", () => {
   it("should display the `Change permissions` menu for admin users", async () => {
     await setup();
 
