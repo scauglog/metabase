@@ -20,7 +20,10 @@
    [metabase.util.schema :as su]
    [ring.mock.request :as ring.mock]
    [ring.util.codec :as codec]
-   [schema.core :as schema]))
+   [schema.core :as schema])
+  (:import
+   (metabase.async.streaming_response StreamingResponse)
+   (java.io PipedInputStream)))
 
 (set! *warn-on-reflection* true)
 
@@ -231,8 +234,14 @@
                         (let [resp (metabase.server.handler/app req identity identity)]
                           (update resp :body
                                   (fn [body]
-                                    (with-open [r (clojure.java.io/reader body)]
-                                      (slurp r)))))
+                                    (cond
+                                      (instance? PipedInputStream body)
+                                      (with-open [r (clojure.java.io/reader body)]
+                                        (slurp r))
+
+                                      #_(instance? StreamingResponse body)
+                                      :else
+                                      body))))
                         #_(request-fn url request-map)
                         (catch clojure.lang.ExceptionInfo e
                           (log/debug e method-name url)
