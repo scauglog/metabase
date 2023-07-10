@@ -7,7 +7,7 @@ import { SetupOpts, setup as baseSetup } from "./setup";
 async function setup(options: SetupOpts = {}) {
   await baseSetup({
     hasEnterprisePlugins: true,
-    tokenFeatures: { content_management: true },
+    tokenFeatures: { snippet_collections: true },
     ...options,
   });
 }

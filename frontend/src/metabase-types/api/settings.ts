@@ -142,12 +142,12 @@ export interface TokenFeatures {
   advanced_permissions: boolean;
   audit_app: boolean;
   content_management: boolean;
-  content_management_legacy: boolean;
   embedding: boolean;
   hosting: boolean;
   sandboxes: boolean;
   sso: boolean;
   whitelabel: boolean;
+  snippet_collections: boolean;
 }
 
 export type PasswordComplexity = {
