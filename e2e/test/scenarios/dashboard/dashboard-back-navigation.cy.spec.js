@@ -301,6 +301,7 @@ describe(
 
       filterWidget().findByPlaceholderText("sleep").type("5{enter}");
 
+      cy.wait("@dashcardQuery");
       cy.get("@dashcardQuery.all").should("have.length", 2);
 
       getDashboardCard().within(() => {
