@@ -290,9 +290,14 @@ describe(
 
     it("should preserve filter value when navigating between the dashboard and the question", () => {
       createDashboardWithSlowCard();
-      cy.get("@dashboardId").then(visitDashboard);
-
-      cy.get("@dashcardQuery.all").should("have.length", 1);
+      cy.get("@dashboardId").then(id => {
+        // Explicitly not using `visitDashboard` helper here because it also
+        // sets an intecept for the same route `POST /api/dashboard/*/dashcard/*/card/*/query`
+        // that we're listening to and asserting on
+        cy.visit(`/dashboard/${id}`);
+        cy.wait("@dashcardQuery");
+        cy.get("@dashcardQuery.all").should("have.length", 1);
+      });
 
       filterWidget().findByPlaceholderText("sleep").type("5{enter}");
 
