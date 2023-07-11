@@ -318,8 +318,8 @@ describe(
         cy.get(".cellData").should("be.visible").and("contain", 5);
       });
 
-      cy.log("Dashcard data is re-requested");
-      cy.get("@dashcardQuery.all").should("have.length", 3);
+      cy.log("Dashcard data should not be re-requested");
+      cy.get("@dashcardQuery.all").should("have.length", 2);
     });
   },
 );
