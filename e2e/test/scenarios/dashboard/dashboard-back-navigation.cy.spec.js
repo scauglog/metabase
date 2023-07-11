@@ -304,22 +304,22 @@ describe(
       cy.wait("@dashcardQuery");
       cy.get("@dashcardQuery.all").should("have.length", 2);
 
+      filterWidget().findByPlaceholderText("sleep").should("have.value", "5");
       getDashboardCard().within(() => {
         cy.findByText("Sleep card").click();
         cy.wait("@card");
       });
 
-      filterWidget().findByPlaceholderText("sleep").should("have.value", "5");
-
       queryBuilderHeader().findByLabelText("Back to Sleep dashboard").click();
 
+      filterWidget().findByPlaceholderText("sleep").should("have.value", "5");
       getDashboardCard().within(() => {
         cy.findByText("Sleep card").should("be.visible");
+        cy.get(".cellData").should("be.visible").and("contain", 5);
       });
 
       cy.log("Dashcard data is re-requested");
       cy.get("@dashcardQuery.all").should("have.length", 3);
-      filterWidget().findByPlaceholderText("sleep").should("have.value", "5");
     });
   },
 );
